@@ -1,0 +1,45 @@
+1. Fitur Bahan Masuk Dari Supplier (Beli)
+2. Fitur Jual Bahan Mentah Ke Pelanggan (Jual)
+3. Fitur Jual Produk Ke Pelanggan (Jual) -> Oflline, Eccomerce
+4. Fitur Jual Mesin Ke Supplier (Jual)
+5. Fitur Beli Bahan dari Supplier (Beli)
+6. Pemasukan
+7. Pengeluaran
+8. Piutang
+9. Absen dan Gaji karyawan
+barang masuk, jenis barang, supplier, tanggal, nominal, harga, kg, kadar air
+- coco bristle 
+- coco peat
+- coco fyber
+fitur ekpor excel
+supplier-barang masuk(belum jadi) => barang 
+
+Supplier
+
+
+Barang(produk) masuk kemudian dijual barang keluar
+
+Jual mesin ke supplier (pemasukan)
+penjualan supplier ke binco (pengeluaran) hasilnya menambah barang(produk)
+
+role : admin, admin bahan baku, admin produk
+persetujuan stok admin
+pembayaran via offline, tiktok, shoope, 
+
+
+Pemasukan.
+Pengeluaran.
+Piutang (cicilan), waktu utang  ke pemasukan dan ketika keluar ke pengeluaran
+
+ 
+
+
+
+
+
+
+
+User : admin login
+Karyawan : id_karyawan, nama, jenkel, nohp, id_defisi, password
+defisi : id_defisi, namadefisi, gapok, lembur, insentif
+gaji : id 
