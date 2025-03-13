@@ -8,6 +8,8 @@
         <title><?= $title ?></title>
         <link rel="stylesheet" href="<?= base_url('assets/')?>dist/css/app.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <!-- END: Head -->
     <body class="py-5 md:py-0">
@@ -79,31 +81,31 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('admin/bahan-masuk') ?>" class="side-menu <?php if($halaman=='bahan-masuk'){ echo "side-menu--active"; } ?>">
+                        <a href="<?= base_url('admin/bahanmasuk') ?>" class="side-menu <?php if($halaman=='bahanmasuk'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="skip-back"></i> </div>
                             <div class="side-menu__title"> Bahan Masuk</div>
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('admin/bahan-keluar') ?>" class="side-menu <?php if($halaman=='bahan-keluar'){ echo "side-menu--active"; } ?>">
+                        <a href="<?= base_url('admin/bahankeluar') ?>" class="side-menu <?php if($halaman=='bahankeluar'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="skip-forward"></i> </div>
                             <div class="side-menu__title"> Bahan Keluar</div>
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('admin/pelanggan') ?>" class="side-menu <?php if($halaman=='pelanggan'){ echo "side-menu--active"; } ?>">
-                            <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
-                            <div class="side-menu__title"> Pelanggan</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= base_url('admin/supplier-bahan') ?>" class="side-menu <?php if($halaman=='supplier-bahan'){ echo "side-menu--active"; } ?>">
+                        <a href="<?= base_url('admin/supplierbahan') ?>" class="side-menu <?php if($halaman=='supplierbahan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
                             <div class="side-menu__title"> Supplier Bahan</div>
                         </a>
                     </li>
 
                     <li class="side-nav__devider my-6"></li>
+                    <li>
+                        <a href="<?= base_url('admin/pelanggan') ?>" class="side-menu <?php if($halaman=='pelanggan'){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
+                            <div class="side-menu__title"> Pelanggan</div>
+                        </a>
+                    </li>
                     <li>
                         <a href="<?= base_url('admin/bahan') ?>" class="side-menu <?php if($halaman=='bahan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="command"></i> </div>
@@ -117,12 +119,23 @@
             <!-- BEGIN: Content -->
             <div class="content">
                 <?= $contents ?>
+                
             </div>
             <!-- END: Content -->
         </div>
         <!-- BEGIN: JS Assets-->
         <script src="<?= base_url('assets/')?>dist/js/app.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $('#example1').DataTable({
+                "searching": true,
+                "lengthChange": false,
+                "language": {
+                    "search": "Pencarian "
+                }
+            });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             <?php if($this->session->flashdata('notifikasi')): ?>

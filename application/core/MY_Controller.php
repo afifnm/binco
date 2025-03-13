@@ -7,4 +7,8 @@ class MY_Controller extends CI_Controller {
             redirect('auth');
         }
     }
+    public function set_flash($message, $icon = 'success') {
+        $this->session->set_flashdata('notifikasi', $message);
+        $this->session->set_flashdata('icon', $icon);
+    }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2025 at 08:29 AM
+-- Generation Time: Mar 13, 2025 at 06:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -29,10 +29,65 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bahan` (
   `id_bahan` int(11) NOT NULL,
-  `bahan` varchar(40) NOT NULL,
-  `stok` int(11) NOT NULL,
+  `bahan` varchar(50) NOT NULL,
   `harga` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bahan`
+--
+
+INSERT INTO `bahan` (`id_bahan`, `bahan`, `harga`) VALUES
+(1, 'Coco Peat', 50000),
+(2, 'Coco Fyber', 900000),
+(3, 'Coco Bristle', 200000);
+
+--
+-- Triggers `bahan`
+--
+DELIMITER $$
+CREATE TRIGGER `after_insert_bahan` AFTER INSERT ON `bahan` FOR EACH ROW BEGIN
+    INSERT INTO bahan_stok (id_bahan, stok) VALUES (NEW.id_bahan, 0);
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bahan_log`
+--
+
+CREATE TABLE `bahan_log` (
+  `id_log` int(11) NOT NULL,
+  `id_bahan` int(11) NOT NULL,
+  `tipe` enum('pembelian','penjualan') NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `harga_satuan` decimal(10,0) NOT NULL,
+  `tanggal` datetime DEFAULT current_timestamp(),
+  `keterangan` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bahan_stok`
+--
+
+CREATE TABLE `bahan_stok` (
+  `id_stok` int(11) NOT NULL,
+  `id_bahan` int(11) NOT NULL,
+  `stok` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bahan_stok`
+--
+
+INSERT INTO `bahan_stok` (`id_stok`, `id_bahan`, `stok`) VALUES
+(1, 1, 0),
+(2, 2, 0),
+(3, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -54,6 +109,19 @@ CREATE TABLE `konfigurasi` (
 
 INSERT INTO `konfigurasi` (`id_konfigurasi`, `nama_cv`, `alamat`, `telp`, `email`) VALUES
 (1, 'KOPSISMART ', 'Jl. Yos Sudarso, Jengglong, Bejen, Kec. Karanganyar, Kabupaten Karanganyar, Jawa Tengah 57716', '+6282329769012', '-');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `id_supplier` int(11) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `alamat` varchar(50) NOT NULL,
+  `telp` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -88,10 +156,30 @@ ALTER TABLE `bahan`
   ADD PRIMARY KEY (`id_bahan`);
 
 --
+-- Indexes for table `bahan_log`
+--
+ALTER TABLE `bahan_log`
+  ADD PRIMARY KEY (`id_log`),
+  ADD KEY `id_bahan` (`id_bahan`);
+
+--
+-- Indexes for table `bahan_stok`
+--
+ALTER TABLE `bahan_stok`
+  ADD PRIMARY KEY (`id_stok`),
+  ADD KEY `id_bahan` (`id_bahan`);
+
+--
 -- Indexes for table `konfigurasi`
 --
 ALTER TABLE `konfigurasi`
   ADD PRIMARY KEY (`id_konfigurasi`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id_supplier`);
 
 --
 -- Indexes for table `user`
@@ -107,7 +195,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bahan`
 --
 ALTER TABLE `bahan`
-  MODIFY `id_bahan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_bahan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `bahan_log`
+--
+ALTER TABLE `bahan_log`
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bahan_stok`
+--
+ALTER TABLE `bahan_stok`
+  MODIFY `id_stok` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `konfigurasi`
@@ -116,10 +216,32 @@ ALTER TABLE `konfigurasi`
   MODIFY `id_konfigurasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `supplier`
+--
+ALTER TABLE `supplier`
+  MODIFY `id_supplier` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `bahan_log`
+--
+ALTER TABLE `bahan_log`
+  ADD CONSTRAINT `bahan_log_ibfk_1` FOREIGN KEY (`id_bahan`) REFERENCES `bahan` (`id_bahan`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bahan_stok`
+--
+ALTER TABLE `bahan_stok`
+  ADD CONSTRAINT `bahan_stok_ibfk_1` FOREIGN KEY (`id_bahan`) REFERENCES `bahan` (`id_bahan`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
