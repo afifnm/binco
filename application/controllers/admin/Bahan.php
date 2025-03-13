@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Bahan extends MY_Controller {
 	public function index(){
-		date_default_timezone_set("Asia/Jakarta");
 		$data = [
 			'title' => 'Daftar Bahan',
 			'bahan' => $this->db->join('bahan_stok', 'bahan.id_bahan = bahan_stok.id_bahan', 'left')
