@@ -135,6 +135,13 @@
                     "search": "Pencarian "
                 }
             });
+            $('#example2').DataTable({
+                "searching": true,
+                "lengthChange": false,
+                "language": {
+                    "search": "Pencarian "
+                }
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>

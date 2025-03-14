@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 06:31 AM
+-- Generation Time: Mar 14, 2025 at 07:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,7 +40,8 @@ CREATE TABLE `bahan` (
 INSERT INTO `bahan` (`id_bahan`, `bahan`, `harga`) VALUES
 (1, 'Coco Peat', 50000),
 (2, 'Coco Fyber', 900000),
-(3, 'Coco Bristle', 200000);
+(3, 'Coco Bristle', 200000),
+(4, 'Lain-lain', 700000);
 
 --
 -- Triggers `bahan`
@@ -71,6 +72,38 @@ CREATE TABLE `bahan_log` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bahan_masuk`
+--
+
+CREATE TABLE `bahan_masuk` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `id_supplier` int(11) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` tinyint(1) NOT NULL,
+  `total` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bahan_masuk_detail`
+--
+
+CREATE TABLE `bahan_masuk_detail` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(50) NOT NULL,
+  `id_bahan` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `kadar_air` int(11) NOT NULL,
+  `berat` int(11) NOT NULL,
+  `harga_beli` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bahan_stok`
 --
 
@@ -87,7 +120,8 @@ CREATE TABLE `bahan_stok` (
 INSERT INTO `bahan_stok` (`id_stok`, `id_bahan`, `stok`) VALUES
 (1, 1, 0),
 (2, 2, 0),
-(3, 3, 0);
+(3, 3, 0),
+(4, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -122,6 +156,14 @@ CREATE TABLE `supplier` (
   `alamat` varchar(50) NOT NULL,
   `telp` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id_supplier`, `nama`, `alamat`, `telp`) VALUES
+(1, 'Jack', 'Jongke', '089090'),
+(2, 'Apip', 'Jl. Sepat Bulu, Bulu, Sukoharjo, 57563', '0890902');
 
 -- --------------------------------------------------------
 
@@ -195,7 +237,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bahan`
 --
 ALTER TABLE `bahan`
-  MODIFY `id_bahan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_bahan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `bahan_log`
@@ -207,7 +249,7 @@ ALTER TABLE `bahan_log`
 -- AUTO_INCREMENT for table `bahan_stok`
 --
 ALTER TABLE `bahan_stok`
-  MODIFY `id_stok` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_stok` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `konfigurasi`
@@ -219,7 +261,7 @@ ALTER TABLE `konfigurasi`
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `id_supplier` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_supplier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
