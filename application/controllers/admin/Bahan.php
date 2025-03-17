@@ -10,6 +10,20 @@ class Bahan extends MY_Controller {
 		];
 		$this->template->load('temp','bahan/daftarBahan',$data);
 	}
+	public function log($id_bahan){
+		$data = [
+			'title' => 'Log Bahan',
+			'logs' => $this->db->where('id_bahan', $id_bahan)
+								->order_by('id_log', 'ASC')
+								->get('bahan_log')
+								->result_array(),
+			'bahan' => $this->db->where('a.id_bahan', $id_bahan)
+								->join('bahan_stok', 'a.id_bahan = bahan_stok.id_bahan', 'left')
+								->get('bahan a')
+								->row()
+		];
+		$this->template->load('temp','bahan/logBahan',$data);
+	}
 	public function simpan() {
 		$post = $this->input->post();
 		if ($this->db->get_where('bahan', ['bahan' => $post['bahan']])->num_rows() > 0) {

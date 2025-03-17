@@ -41,6 +41,9 @@
 									data-id="<?= $row['id_bahan']; ?>">
 									<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
 								</a>
+                                <a class="flex items-center text-success ml-2" href="<?= base_url('admin/bahan/log/' . $row['id_bahan']); ?>">
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Log
+                                </a>
 							</div>
 						</td>
                     </tr>

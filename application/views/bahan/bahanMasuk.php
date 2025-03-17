@@ -15,8 +15,10 @@
                     <tr>
                         <th class="text-center border-b-2 whitespace-no-wrap">NO</th>
                         <th class="text-center border-b-2 whitespace-no-wrap">INVOICE</th>
+                        <th class="text-center border-b-2 whitespace-no-wrap">STATUS</th>
                         <th class="text-center border-b-2 whitespace-no-wrap">SUPPLIER</th>
                         <th class="text-center border-b-2 whitespace-no-wrap">TANGGAL</th>
+                        <th class="text-center border-b-2 whitespace-no-wrap">TAGIHAN</th>
                         <th class="text-center border-b-2 whitespace-no-wrap text-center">AKSI</th>
                     </tr>
                     </thead>
@@ -24,24 +26,23 @@
                     <?php $no = 1; foreach ($bahan as $row) {?>
                     <tr>
                         <td class="text-center border-b"><?= $no; ?></td>
-                        <td class="text-left border-b"><?= $row['bahan']; ?></td>
-                        <td class="text-center border-b"><?= $row['stok']; ?></td>
-                        <td class="text-right border-b">Rp. <?= number_format($row['harga']); ?></td>
+                        <td class="text-center border-b"><?= $row['invoice']; ?></td>
+                        <td class="text-center border-b">
+                            <?php if($row['status']==0){ ?>
+                                <div class="flex items-center justify-center whitespace-nowrap text-danger"> <i data-lucide="x-square" class="w-4 h-4 mr-2"></i> Cancel </div>
+                            <?php } else { ?>
+                                <div class="flex items-center justify-center whitespace-nowrap text-success"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Completed </div>
+                            <?php } ?>
+                        </td>
+                        <td class="text-center border-b"><?= $row['nama']; ?></td>
+                        <td class="text-center border-b"><?= date('d F Y H:i', strtotime($row['tanggal'])); ?></td>
+                        <td class="text-right border-b">Rp. <?= number_format($row['total']); ?></td>
                         <td class="border-b">
-							<div class="flex justify-center items-center">
-								<a class="flex items-center mr-3 text-blue-500 edit-btn" href="javascript:;" 
-									data-id="<?= $row['id_bahan']; ?>" 
-									data-bahan="<?= $row['bahan']; ?>" 
-									data-harga="<?= $row['harga']; ?>" 
-									data-tw-toggle="modal" 
-									data-tw-target="#edit-modal">
-									<i data-lucide="edit" class="w-4 h-4 mr-1"></i> Edit
-								</a>
-								<a class="flex items-center text-danger delete-btn" href="javascript:;" 
-									data-id="<?= $row['id_bahan']; ?>">
-									<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-								</a>
-							</div>
+                            <div class="flex justify-center items-center">
+                                <a class="flex items-center text-blue-500" href="<?= base_url('admin/bahanmasuk/invoice/'.$row['invoice'])?>">
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Invoice
+                                </a>
+                            </div>
 						</td>
                     </tr>
                     <?php $no++; } ?>

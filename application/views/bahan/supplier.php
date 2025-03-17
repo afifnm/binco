@@ -43,7 +43,10 @@
 									data-id="<?= $row['id_supplier']; ?>">
 									<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
 								</a>
-							</div>
+                                <a class="flex items-center text-success ml-2" href="<?= base_url('admin/supplierbahan/transaksi/'.$row['id_supplier'])?>">
+                                    <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Transaksi
+                                </a>
+                            </div>
 						</td>
                     </tr>
                     <?php $no++; } ?>

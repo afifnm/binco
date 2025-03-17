@@ -9,7 +9,18 @@ class Supplierbahan extends MY_Controller {
 		];
 		$this->template->load('temp', 'bahan/supplier', $data);
 	}
-
+	public function transaksi($id_supplier){
+		$data = [
+			'title' => 'Daftar Transaksi Supplier',
+			'bahan' => $this->db->join('supplier b', 'a.id_supplier = b.id_supplier', 'left')
+					->where('a.id_supplier', $id_supplier)
+					->order_by('invoice','DESC')
+                    ->get('bahan_masuk a')
+                    ->result_array(),
+			'supplier' => $this->db->order_by('nama','ASC')->get('supplier')->result_array()
+		];
+		$this->template->load('temp','bahan/bahanMasuk',$data);
+    }
 	public function simpan() {
 		$post = $this->input->post();
 		if ($this->db->get_where('supplier', ['nama' => $post['nama']])->num_rows() > 0) {

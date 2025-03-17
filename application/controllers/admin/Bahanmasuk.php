@@ -5,12 +5,50 @@ class Bahanmasuk extends MY_Controller {
 		$data = [
 			'title' => 'Daftar Pembelian Bahan Masuk',
 			'bahan' => $this->db->join('supplier b', 'a.id_supplier = b.id_supplier', 'left')
+					->order_by('invoice','DESC')
                     ->get('bahan_masuk a')
                     ->result_array(),
 			'supplier' => $this->db->order_by('nama','ASC')->get('supplier')->result_array()
 		];
 		$this->template->load('temp','bahan/bahanMasuk',$data);
     }
+	public function invoice($invoice){
+		$data = [
+			'title' => 'Pembelian #'.$invoice,
+			'row'   => $this->db->select('a.*, b.*, c.nama as namauser')
+						->where('invoice', $invoice)
+						->join('supplier b', 'a.id_supplier = b.id_supplier', 'left')
+						->join('user c', 'a.username = c.username', 'left')
+						->get('bahan_masuk a')->row(),
+			'details' => $this->db->select('a.*, b.bahan')
+						->join('bahan b', 'a.id_bahan = b.id_bahan', 'left')
+						->where('invoice', $invoice)
+						->get('bahan_masuk_detail a')->result_array(),
+		];
+		$this->template->load('temp','bahan/bahanMasukInvoice',$data);
+    }
+	public function cancel($invoice){
+		// Update status to 0 (canceled)
+		$this->db->where('invoice', $invoice)->update('bahan_masuk', ['status' => 0]);       
+		// Get the details of the canceled items
+		$details = $this->db->where('invoice', $invoice)->get('bahan_masuk_detail')->result_array();
+		foreach ($details as $item) {
+			$this->db->set('stok', 'stok - ' . $item['jumlah'], FALSE)
+					 ->where('id_bahan', $item['id_bahan'])
+					 ->update('bahan_stok'); // update stock
+			$log = [
+				'invoice'	=> $invoice,
+				'tipe'   	=> 'pembatalan',
+				'jumlah'	=> $item['jumlah'],
+				'harga_satuan'	=> $item['harga_beli'],
+				'id_bahan'		=> $item['id_bahan']
+			];
+			$this->db->insert('bahan_log', $log); // insert into log
+		}
+		$this->set_flash('Pembelian dibatalkan','success');
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
 	public function transaksi($id_supplier=NULL){
 		if($id_supplier==NULL){ redirect('admin/bahanmasuk'); }
 		$data = array(
@@ -61,12 +99,20 @@ class Bahanmasuk extends MY_Controller {
 					'berat'      => $item['berat'],
 					'harga_beli' => $item['harga']
 				];
-				$this->db->insert('bahan_masuk_detail', $data);
+				$this->db->insert('bahan_masuk_detail', $data); //input ke detail
 				$this->db->set('stok', 'stok + ' . $item['jumlah'], FALSE)
 						->where('id_bahan', $item['id_bahan'])
-						->update('bahan_stok');
+						->update('bahan_stok'); //ubah stok bahan
+				$log = [
+					'invoice'	=> $invoice,
+					'tipe'   	=> 'pembelian',
+					'jumlah'	=> $item['jumlah'],
+					'harga_satuan'	=> $item['harga'],
+					'id_bahan'		=> $item['id_bahan']
+				];
+				$this->db->insert('bahan_log',$log); //input ke tabel bahan masuk (pembelian)
 			}
-			//delete_cookie('keranjang_bahan');
+			delete_cookie('keranjang_bahan');
 			$databeli = [
 				'invoice'	=> $invoice,
 				'username'	=> $this->session->userdata('username'),
@@ -74,11 +120,14 @@ class Bahanmasuk extends MY_Controller {
 				'status'	=> true,
 				'total'		=> $post['total']
 			];
-			$this->set_flash('Pembayaran berhasil dilakukan','success');
+			$this->db->insert('bahan_masuk',$databeli); //input ke tabel bahan masuk (pembelian)
+			$this->set_flash('Pembayaran berhasil dilakukan','success'); //input ke invoice
+			redirect('admin/bahanmasuk/invoice/'.$invoice);
 		} else {
 			$this->set_flash('Pembayaran gagal dilakukan, restart ulang browser','error');
+			redirect($_SERVER['HTTP_REFERER']);
 		}
-		redirect($_SERVER['HTTP_REFERER']);
+		
 	}
 	
 }

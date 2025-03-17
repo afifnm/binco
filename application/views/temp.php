@@ -142,6 +142,10 @@
                     "search": "Pencarian "
                 }
             });
+            $('#log').DataTable({
+                "searching": false,
+                "lengthChange": false,
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
