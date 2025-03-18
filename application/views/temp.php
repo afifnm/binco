@@ -93,6 +93,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="<?= base_url('admin/pelanggan') ?>" class="side-menu <?php if($halaman=='pelanggan'){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
+                            <div class="side-menu__title"> Pelanggan</div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?= base_url('admin/supplierbahan') ?>" class="side-menu <?php if($halaman=='supplierbahan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
                             <div class="side-menu__title"> Supplier Bahan</div>
@@ -100,12 +106,6 @@
                     </li>
 
                     <li class="side-nav__devider my-6"></li>
-                    <li>
-                        <a href="<?= base_url('admin/pelanggan') ?>" class="side-menu <?php if($halaman=='pelanggan'){ echo "side-menu--active"; } ?>">
-                            <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
-                            <div class="side-menu__title"> Pelanggan</div>
-                        </a>
-                    </li>
                     <li>
                         <a href="<?= base_url('admin/bahan') ?>" class="side-menu <?php if($halaman=='bahan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="command"></i> </div>

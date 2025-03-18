@@ -1,5 +1,5 @@
 <div class="w-full mt-5 text-right">
-    <a href="<?= base_url('admin/bahanmasuk/nota/'.$row->invoice)?>"
+    <a href="<?= base_url('admin/bahankeluar/nota/'.$row->invoice)?>"
      target="_blank" class="btn btn-primary shadow-md mr-2">Print</a>
     <?php if($row->status){ ?>
         <button id="cancelButton" class="btn btn-primary">Batalkan Transaksi</button>
@@ -15,7 +15,7 @@
                     confirmButtonText: 'Ya, batalkan!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '<?= base_url('admin/bahanmasuk/cancel/'.$row->invoice)?>';
+                        window.location.href = '<?= base_url('admin/bahankeluar/cancel/'.$row->invoice)?>';
                     }
                 })
             });
@@ -50,20 +50,17 @@
                         <tr>
                             <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">BAHAN</th>
                             <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">JUMLAH</th>
-                            <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">HARGA BELI</th>
+                            <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">HARGA JUAL</th>
                             <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">SUBTOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($details as $detail): ?>
                         <tr>
-                            <td class="border-b dark:border-darkmode-400">
-                                <div class="font-medium whitespace-nowrap"><?= $detail['bahan'] ?></div>
-                                <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap"><?= $detail['kadar_air'] ?>% kadar air | berat <?=$detail['berat'] ?>kg</div>
-                            </td>
+                            <td class="border-b dark:border-darkmode-400"><?= $detail['bahan'] ?></td>
                             <td class="text-right border-b dark:border-darkmode-400 w-32"><?= $detail['jumlah'] ?></td>
-                            <td class="text-right border-b dark:border-darkmode-400 w-32">Rp. <?= number_format($detail['harga_beli']) ?></td>
-                            <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">Rp. <?= number_format($detail['jumlah']*$detail['harga_beli']) ?></td>
+                            <td class="text-right border-b dark:border-darkmode-400 w-32">Rp. <?= number_format($detail['harga_jual']) ?></td>
+                            <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">Rp. <?= number_format($detail['jumlah']*$detail['harga_jual']) ?></td>
                         </tr>
                         <?php endforeach; ?>
                         <tr class="bg-gray-100 font-bold">

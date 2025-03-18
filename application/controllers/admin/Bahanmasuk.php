@@ -52,8 +52,8 @@ class Bahanmasuk extends MY_Controller {
 	public function transaksi($id_supplier=NULL){
 		if($id_supplier==NULL){ redirect('admin/bahanmasuk'); }
 		$data = array(
-			'title'			=> 'Transaksi Pembelian Bahan #'.$this->Func_model->nota(),
-			'nota'			=> $this->Func_model->nota(),
+			'title'			=> 'Transaksi Pembelian Bahan #'.$this->Func_model->nota1(),
+			'nota'			=> $this->Func_model->nota1(),
 			'id_supplier'	=> $id_supplier,
 			'keranjang'		=> isset($_COOKIE['keranjang_bahan']) ? json_decode($_COOKIE['keranjang_bahan'], true) : [],
 			'bahan' 		=> $this->db->order_by('bahan','ASC')->get('bahan')->result_array()
@@ -86,7 +86,7 @@ class Bahanmasuk extends MY_Controller {
 	}
 	public function checkout() {
 		$post = $this->input->post();
-		$invoice = $this->Func_model->nota();
+		$invoice = $this->Func_model->nota1();
 		$keranjang = get_cookie('keranjang_bahan');
 		$keranjang = $keranjang ? json_decode($keranjang, true) : [];
 		if (!empty($keranjang)) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2025 at 08:58 AM
+-- Generation Time: Mar 18, 2025 at 08:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -56,6 +56,36 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bahan_keluar`
+--
+
+CREATE TABLE `bahan_keluar` (
+  `id` int(11) NOT NULL,
+  `id_pelanggan` int(11) NOT NULL,
+  `invoice` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` tinyint(1) NOT NULL,
+  `total` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bahan_keluar_detail`
+--
+
+CREATE TABLE `bahan_keluar_detail` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(20) NOT NULL,
+  `id_bahan` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `harga_jual` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bahan_log`
 --
 
@@ -68,19 +98,6 @@ CREATE TABLE `bahan_log` (
   `tanggal` datetime DEFAULT current_timestamp(),
   `invoice` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `bahan_log`
---
-
-INSERT INTO `bahan_log` (`id_log`, `id_bahan`, `tipe`, `jumlah`, `harga_satuan`, `tanggal`, `invoice`) VALUES
-(2, 3, 'pembelian', 20, 100000, '2025-03-17 12:34:11', '25031731'),
-(3, 3, 'pembelian', 20, 50000, '2025-03-17 12:36:40', '25031732'),
-(4, 1, 'pembelian', 50, 20000, '2025-03-17 12:36:40', '25031732'),
-(5, 3, 'pembatalan', 20, 100000, '2025-03-17 13:28:54', '25031731'),
-(6, 3, 'pembatalan', 20, 50000, '2025-03-17 13:44:34', '25031732'),
-(7, 1, 'pembatalan', 50, 20000, '2025-03-17 13:44:34', '25031732'),
-(8, 1, 'pembelian', 50, 100000, '2025-03-17 13:49:20', '25031733');
 
 -- --------------------------------------------------------
 
@@ -98,15 +115,6 @@ CREATE TABLE `bahan_masuk` (
   `total` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `bahan_masuk`
---
-
-INSERT INTO `bahan_masuk` (`id`, `invoice`, `username`, `id_supplier`, `tanggal`, `status`, `total`) VALUES
-(1, '25031731', 'admin', 2, '2025-03-17 06:28:54', 0, 2000000),
-(2, '25031732', 'admin', 2, '2025-03-17 06:44:34', 0, 2000000),
-(3, '25031733', 'admin', 1, '2025-03-17 06:49:20', 1, 5000000);
-
 -- --------------------------------------------------------
 
 --
@@ -122,16 +130,6 @@ CREATE TABLE `bahan_masuk_detail` (
   `berat` int(11) NOT NULL,
   `harga_beli` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `bahan_masuk_detail`
---
-
-INSERT INTO `bahan_masuk_detail` (`id`, `invoice`, `id_bahan`, `jumlah`, `kadar_air`, `berat`, `harga_beli`) VALUES
-(4, '25031731', 3, 20, 20, 20, 100000),
-(5, '25031732', 3, 20, 20, 20, 50000),
-(6, '25031732', 1, 50, 40, 20, 20000),
-(7, '25031733', 1, 50, 90, 20, 100000);
 
 -- --------------------------------------------------------
 
@@ -150,9 +148,9 @@ CREATE TABLE `bahan_stok` (
 --
 
 INSERT INTO `bahan_stok` (`id_stok`, `id_bahan`, `stok`) VALUES
-(1, 1, 50),
+(1, 1, 0),
 (2, 2, 0),
-(3, 3, 60),
+(3, 3, 0),
 (4, 4, 0);
 
 -- --------------------------------------------------------
@@ -175,6 +173,28 @@ CREATE TABLE `konfigurasi` (
 
 INSERT INTO `konfigurasi` (`id_konfigurasi`, `nama_cv`, `alamat`, `telp`, `email`) VALUES
 (1, 'KOPSISMART ', 'Jl. Yos Sudarso, Jengglong, Bejen, Kec. Karanganyar, Kabupaten Karanganyar, Jawa Tengah 57716', '+6282329769012', '-');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pelanggan`
+--
+
+CREATE TABLE `pelanggan` (
+  `id_pelanggan` int(11) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `alamat` varchar(80) NOT NULL,
+  `telp` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pelanggan`
+--
+
+INSERT INTO `pelanggan` (`id_pelanggan`, `nama`, `alamat`, `telp`) VALUES
+(3, 'Rizki', 'Polokarto', '0890902'),
+(4, 'Ahmad', 'Jl. Sepat Bulu, Bulu, Sukoharjo, 57563', '0890902'),
+(5, 'Nurudiin', 'Jl. Sepat, DK. Sepat, Rt:02/Rw:03, Bulu', '089090');
 
 -- --------------------------------------------------------
 
@@ -230,6 +250,18 @@ ALTER TABLE `bahan`
   ADD PRIMARY KEY (`id_bahan`);
 
 --
+-- Indexes for table `bahan_keluar`
+--
+ALTER TABLE `bahan_keluar`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bahan_keluar_detail`
+--
+ALTER TABLE `bahan_keluar_detail`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bahan_log`
 --
 ALTER TABLE `bahan_log`
@@ -262,6 +294,12 @@ ALTER TABLE `konfigurasi`
   ADD PRIMARY KEY (`id_konfigurasi`);
 
 --
+-- Indexes for table `pelanggan`
+--
+ALTER TABLE `pelanggan`
+  ADD PRIMARY KEY (`id_pelanggan`);
+
+--
 -- Indexes for table `supplier`
 --
 ALTER TABLE `supplier`
@@ -284,22 +322,34 @@ ALTER TABLE `bahan`
   MODIFY `id_bahan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `bahan_keluar`
+--
+ALTER TABLE `bahan_keluar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bahan_keluar_detail`
+--
+ALTER TABLE `bahan_keluar_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `bahan_log`
 --
 ALTER TABLE `bahan_log`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bahan_masuk`
 --
 ALTER TABLE `bahan_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bahan_masuk_detail`
 --
 ALTER TABLE `bahan_masuk_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bahan_stok`
@@ -312,6 +362,12 @@ ALTER TABLE `bahan_stok`
 --
 ALTER TABLE `konfigurasi`
   MODIFY `id_konfigurasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `pelanggan`
+--
+ALTER TABLE `pelanggan`
+  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `supplier`

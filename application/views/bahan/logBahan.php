@@ -28,11 +28,23 @@
                             <?= date('d F Y H:i', strtotime($row['tanggal'])); ?>
                         </td>
                         <td class="text-center border-b">
-                            <?php if ($row['tipe'] == 'pembelian') {
-                                $stok += $row['jumlah'];
-                            } else {
-                                $stok -= $row['jumlah'];
-                            } ?>
+                            <?php
+                            if (strpos($row['invoice'], 'S') === 0) { 
+                                // Jika invoice diawali "S" (Penjualan)
+                                if ($row['tipe'] == 'pembatalan') {
+                                    $stok += $row['jumlah']; // Jika dibatalkan, stok bertambah
+                                } else {
+                                    $stok -= $row['jumlah']; // Normalnya, stok berkurang
+                                }
+                            } elseif (strpos($row['invoice'], 'B') === 0) { 
+                                // Jika invoice diawali "B" (Pembelian)
+                                if ($row['tipe'] == 'pembatalan') {
+                                    $stok -= $row['jumlah']; // Jika dibatalkan, stok berkurang
+                                } else {
+                                    $stok += $row['jumlah']; // Normalnya, stok bertambah
+                                }
+                            }
+                            ?>
                             <?= $stok; ?>
                         </td>
                         <td class="border-b">
