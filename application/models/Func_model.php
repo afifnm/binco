@@ -13,6 +13,10 @@ class Func_model extends CI_Model{
         $this->db->where('id_pelanggan', $id_pelanggan)->from('pelanggan');
         return $this->db->get()->row()->nama;
     }
+    public function namaproduk($id_produk){
+        $this->db->where('id_produk', $id_produk)->from('produk');
+        return $this->db->get()->row()->nama;
+    }
     public function nota1(){
         $tanggal = date('Y-m');
         $nota = 'B'.date('ymd').$this->session->userdata('id_user').($this->db->where("DATE_FORMAT(tanggal,'%Y-%m')", $tanggal)
@@ -23,6 +27,12 @@ class Func_model extends CI_Model{
         $tanggal = date('Y-m');
         $nota = 'S'.date('ymd').$this->session->userdata('id_user').($this->db->where("DATE_FORMAT(tanggal,'%Y-%m')", $tanggal)
         ->count_all_results('bahan_keluar') + 1);
+        return $nota;
+    }
+    public function nota3(){
+        $tanggal = date('Y-m');
+        $nota = 'P'.date('ymd').$this->session->userdata('id_user').($this->db->where("DATE_FORMAT(tanggal,'%Y-%m')", $tanggal)
+        ->count_all_results('produk_penjualan') + 1);
         return $nota;
     }
 }

@@ -8,6 +8,18 @@ class Pelanggan extends MY_Controller {
         ];
 		$this->template->load('temp','bahan/pelanggan',$data);
 	}
+	public function transaksi($id_pelanggan){
+		$data = [
+			'title' => 'Daftar Transaksi Pelanggan',
+			'bahan' => $this->db->join('pelanggan b', 'a.id_pelanggan = b.id_pelanggan', 'left')
+					->where('a.id_pelanggan', $id_pelanggan)
+					->order_by('invoice','DESC')
+                    ->get('bahan_keluar a')
+                    ->result_array(),
+			'pelanggan' => $this->db->order_by('nama','ASC')->get('pelanggan')->result_array()
+		];
+		$this->template->load('temp','bahan/bahanKeluar',$data);
+    }
 	public function simpan() {
 		$post = $this->input->post();
 		if ($this->db->get_where('pelanggan', ['nama' => $post['nama']])->num_rows() > 0) {

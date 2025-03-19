@@ -29,20 +29,23 @@
                         <td class="text-right border-b"><?= $row['telp']; ?></td>
                         <td class="border-b">
 							<div class="flex justify-center items-center">
+                            <?php if ($row['nama'] != 'Bukan Pelanggan') { ?>
 								<a class="flex items-center mr-3 text-blue-500 edit-btn" href="javascript:;" 
-									data-id="<?= $row['id_pelanggan']; ?>" 
-									data-nama="<?= $row['nama']; ?>" 
-									data-alamat="<?= $row['alamat']; ?>" 
-									data-telp="<?= $row['telp']; ?>" 
 									data-tw-toggle="modal" 
-									data-tw-target="#edit-modal">
+									data-tw-target="#edit-modal"
+                                    onclick="edit(
+                                    '<?php echo $row['id_pelanggan'] ?>',
+                                    '<?php echo $row['nama'] ?>',
+                                    '<?php echo $row['alamat'] ?>',
+                                    '<?php echo $row['telp'] ?>'
+                                    )">
 									<i data-lucide="edit" class="w-4 h-4 mr-1"></i> Edit
 								</a>
-								<a class="flex items-center text-danger delete-btn" href="javascript:;" 
-									data-id="<?= $row['id_pelanggan']; ?>">
+								<a class="flex items-center text-danger delete-btn" href="javascript:;" onclick="hapusProduk(<?= $row['id_pelanggan']; ?>)">
 									<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
 								</a>
-                                <a class="flex items-center text-success ml-2" href="<?= base_url('admin/pelanggan/log/' . $row['id_pelanggan']); ?>">
+                            <?php } ?>
+                                <a class="flex items-center text-success ml-2" href="<?= base_url('admin/pelanggan/transaksi/' . $row['id_pelanggan']); ?>">
                                     <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Log Transaksi
                                 </a>
 							</div>

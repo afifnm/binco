@@ -71,26 +71,15 @@
         </div>
     </div>
 </div> <!-- END: Modal Content -->
-
 <script>
-$(document).ready(function () {
     // Handle Klik Tombol Edit
-    $(".edit-btn").click(function () {
-        var id = $(this).data("id");
-        var nama = $(this).data("nama");
-        var alamat = $(this).data("alamat");
-        var telp = $(this).data("telp");
-
-        $("#edit-id").val(id);
-        $("#edit-nama").val(nama);
-        $("#edit-alamat").val(alamat);
-        $("#edit-telp").val(telp);
-    });
-
-    // Handle Klik Tombol Hapus dengan SweetAlert2
-    $(".delete-btn").click(function () {
-        var id = $(this).data("id");
-        
+	function edit(id_pelanggan, nama, alamat, telp) {
+        document.getElementById('edit-id').value = id_pelanggan;
+        document.getElementById('edit-nama').value = nama;
+        document.getElementById('edit-alamat').value = alamat;
+        document.getElementById('edit-telp').value = telp;
+	};
+    function hapusProduk(id) {
         Swal.fire({
             title: "Apakah Anda yakin?",
             text: "Data ini akan dihapus secara permanen!",
@@ -105,6 +94,5 @@ $(document).ready(function () {
                 window.location.href = "<?= base_url('admin/pelanggan/hapus/') ?>" + id;
             }
         });
-    });
-});
+    }
 </script>

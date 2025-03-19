@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="mb-3 ml-5">
-            <h3 class="text-lg font-semibold">Supplier:</h3>
+            <h3 class="text-lg font-semibold">Pelanggan:</h3>
             <p class="text-gray-600"><?= $row->nama ?></p>
             <p class="text-gray-600"><?= $row->alamat ?></p>
             <p class="text-gray-600"><?= $row->telp ?></p>

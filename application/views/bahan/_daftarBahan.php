@@ -65,22 +65,13 @@
  </div> <!-- END: Modal Content -->
 
 <script>
-$(document).ready(function () {
     // Handle Klik Tombol Edit
-    $(".edit-btn").click(function () {
-        var id = $(this).data("id");
-        var bahan = $(this).data("bahan");
-        var harga = $(this).data("harga");
-
-        $("#edit-id").val(id);
-        $("#edit-bahan").val(bahan);
-        $("#edit-harga").val(harga);
-    });
-
-    // Handle Klik Tombol Hapus dengan SweetAlert2
-    $(".delete-btn").click(function () {
-        var id = $(this).data("id");
-        
+	function edit(id_produk, bahan, harga) {
+        document.getElementById('edit-id').value = id_produk;
+        document.getElementById('edit-bahan').value = bahan;
+        document.getElementById('edit-harga').value = harga;
+	};
+    function hapusProduk(id) {
         Swal.fire({
             title: "Apakah Anda yakin?",
             text: "Data ini akan dihapus secara permanen!",
@@ -95,6 +86,5 @@ $(document).ready(function () {
                 window.location.href = "<?= base_url('admin/bahan/hapus/') ?>" + id;
             }
         });
-    });
-});
+    }
 </script>

@@ -10,6 +10,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+        <!-- Select2 JS -->
     </head>
     <!-- END: Head -->
     <body class="py-5 md:py-0">
@@ -81,18 +84,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('admin/bahanmasuk') ?>" class="side-menu <?php if($halaman=='bahanmasuk'){ echo "side-menu--active"; } ?>">
-                            <div class="side-menu__icon"> <i data-lucide="skip-back"></i> </div>
-                            <div class="side-menu__title"> Bahan Masuk</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= base_url('admin/bahankeluar') ?>" class="side-menu <?php if($halaman=='bahankeluar'){ echo "side-menu--active"; } ?>">
-                            <div class="side-menu__icon"> <i data-lucide="skip-forward"></i> </div>
-                            <div class="side-menu__title"> Bahan Keluar</div>
-                        </a>
-                    </li>
-                    <li>
                         <a href="<?= base_url('admin/pelanggan') ?>" class="side-menu <?php if($halaman=='pelanggan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
                             <div class="side-menu__title"> Pelanggan</div>
@@ -101,9 +92,47 @@
                     <li>
                         <a href="<?= base_url('admin/supplierbahan') ?>" class="side-menu <?php if($halaman=='supplierbahan'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="package"></i> </div>
-                            <div class="side-menu__title"> Supplier Bahan</div>
+                            <div class="side-menu__title"> Supplier</div>
                         </a>
                     </li>
+                    <li>
+                        <a href="javascript:;.html" class="side-menu <?php if(($halaman=='bahanmasuk') OR ($halaman=='bahankeluar')){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="shopping-cart"></i> </div>
+                            <div class="side-menu__title">
+                                Transaksi Bahan 
+                                <div class="side-menu__sub-icon transform rotate-180"> <i data-lucide="chevron-down"></i> </div>
+                            </div>
+                        </a>
+                        <ul class="<?php if(($halaman=='bahanmasuk') OR ($halaman=='bahankeluar')){ echo "side-menu__sub-open"; } ?>">
+                            <li>
+                                <a href="<?= base_url('admin/bahanmasuk') ?>" class="side-menu <?php if($halaman=='bahanmasuk'){ echo "side-menu--active"; } ?>">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Pembelian</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('admin/bahankeluar') ?>" class="side-menu <?php if($halaman=='bahankeluar'){ echo "side-menu--active"; } ?>">
+                                    <div class="side-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="side-menu__title"> Penjualan</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="side-nav__devider my-6"></li>
+                    <li>
+                        <a href="<?= base_url('admin/produk') ?>" class="side-menu <?php if($halaman=='produk'){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="codepen"></i> </div>
+                            <div class="side-menu__title"> Produk </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('admin/penjualanproduk') ?>" class="side-menu <?php if($halaman=='penjualanproduk'){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="layers"></i> </div>
+                            <div class="side-menu__title"> Penjualan Produk </div>
+                        </a>
+                    </li>
+
 
                     <li class="side-nav__devider my-6"></li>
                     <li>
@@ -157,6 +186,7 @@
                 });
             <?php endif; ?>
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <?php $this->session->unset_userdata('icon'); $this->session->unset_userdata('notifikasi');?>
             <!-- END: JS Assets-->
     </body>

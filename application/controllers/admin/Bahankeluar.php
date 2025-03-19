@@ -8,7 +8,7 @@ class Bahankeluar extends MY_Controller {
 					->order_by('invoice','DESC')
                     ->get('bahan_keluar a')
                     ->result_array(),
-			'pelanggan' => $this->db->order_by('nama','ASC')->get('pelanggan')->result_array()
+			'pelanggan' => $this->db->get('pelanggan')->result_array()
 		];
 		$this->template->load('temp','bahan/bahanKeluar',$data);
     }

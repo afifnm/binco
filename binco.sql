@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2025 at 08:43 AM
+-- Generation Time: Mar 19, 2025 at 08:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,8 +40,7 @@ CREATE TABLE `bahan` (
 INSERT INTO `bahan` (`id_bahan`, `bahan`, `harga`) VALUES
 (1, 'Coco Peat', 50000),
 (2, 'Coco Fyber', 900000),
-(3, 'Coco Bristle', 200000),
-(4, 'Lain-lain', 700000);
+(3, 'Coco Bristle', 200000);
 
 --
 -- Triggers `bahan`
@@ -69,6 +68,14 @@ CREATE TABLE `bahan_keluar` (
   `total` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bahan_keluar`
+--
+
+INSERT INTO `bahan_keluar` (`id`, `id_pelanggan`, `invoice`, `username`, `tanggal`, `status`, `total`) VALUES
+(1, 3, 'S25031931', 'admin', '2025-03-19 01:05:06', 1, 2000000),
+(2, 4, 'S25031932', 'admin', '2025-03-19 01:05:20', 1, 4000000);
+
 -- --------------------------------------------------------
 
 --
@@ -82,6 +89,14 @@ CREATE TABLE `bahan_keluar_detail` (
   `jumlah` int(11) NOT NULL,
   `harga_jual` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bahan_keluar_detail`
+--
+
+INSERT INTO `bahan_keluar_detail` (`id`, `invoice`, `id_bahan`, `jumlah`, `harga_jual`) VALUES
+(1, 'S25031931', 3, 10, 200000),
+(2, 'S25031932', 3, 20, 200000);
 
 -- --------------------------------------------------------
 
@@ -99,6 +114,18 @@ CREATE TABLE `bahan_log` (
   `invoice` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bahan_log`
+--
+
+INSERT INTO `bahan_log` (`id_log`, `id_bahan`, `tipe`, `jumlah`, `harga_satuan`, `tanggal`, `invoice`) VALUES
+(1, 3, 'pembelian', 30, 50000, '2025-03-19 08:03:46', 'B25031931'),
+(2, 3, 'pembelian', 10, 50000, '2025-03-19 08:03:46', 'B25031931'),
+(3, 3, 'pembelian', 100, 40000, '2025-03-19 08:04:29', 'B25031932'),
+(4, 3, 'pembatalan', 100, 40000, '2025-03-19 08:04:45', 'B25031932'),
+(5, 3, 'penjualan', 10, 200000, '2025-03-19 08:05:06', 'S25031931'),
+(6, 3, 'penjualan', 20, 200000, '2025-03-19 08:05:20', 'S25031932');
+
 -- --------------------------------------------------------
 
 --
@@ -115,6 +142,14 @@ CREATE TABLE `bahan_masuk` (
   `total` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bahan_masuk`
+--
+
+INSERT INTO `bahan_masuk` (`id`, `invoice`, `username`, `id_supplier`, `tanggal`, `status`, `total`) VALUES
+(1, 'B25031931', 'admin', 2, '2025-03-19 01:03:46', 1, 2000000),
+(2, 'B25031932', 'admin', 1, '2025-03-19 01:04:45', 0, 4000000);
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +165,15 @@ CREATE TABLE `bahan_masuk_detail` (
   `berat` int(11) NOT NULL,
   `harga_beli` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bahan_masuk_detail`
+--
+
+INSERT INTO `bahan_masuk_detail` (`id`, `invoice`, `id_bahan`, `jumlah`, `kadar_air`, `berat`, `harga_beli`) VALUES
+(1, 'B25031931', 3, 30, 50, 50, 50000),
+(2, 'B25031931', 3, 10, 20, 20, 50000),
+(3, 'B25031932', 3, 100, 40, 40, 40000);
 
 -- --------------------------------------------------------
 
@@ -150,8 +194,7 @@ CREATE TABLE `bahan_stok` (
 INSERT INTO `bahan_stok` (`id_stok`, `id_bahan`, `stok`) VALUES
 (1, 1, 0),
 (2, 2, 0),
-(3, 3, 0),
-(4, 4, 0);
+(3, 3, 10);
 
 -- --------------------------------------------------------
 
@@ -192,9 +235,102 @@ CREATE TABLE `pelanggan` (
 --
 
 INSERT INTO `pelanggan` (`id_pelanggan`, `nama`, `alamat`, `telp`) VALUES
-(3, 'Rizki', 'Polokarto', '0890902'),
+(3, 'Bukan Pelanggan', '-', '-'),
 (4, 'Ahmad', 'Jl. Sepat Bulu, Bulu, Sukoharjo, 57563', '0890902'),
 (5, 'Nurudiin', 'Jl. Sepat, DK. Sepat, Rt:02/Rw:03, Bulu', '089090');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `produk`
+--
+
+CREATE TABLE `produk` (
+  `id_produk` int(11) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `stok` int(11) NOT NULL,
+  `harga` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk`
+--
+
+INSERT INTO `produk` (`id_produk`, `nama`, `stok`, `harga`) VALUES
+(1, 'Gelas Binco', 20, 10000),
+(2, 'Gantungan Kunci', 50, 25000),
+(3, 'Lampu Hias', 100, 40000),
+(4, 'Tali Sabut Kelapa', 90, 8000),
+(5, 'Gelas Batok Kelapa', 50, 25000),
+(6, 'Asbak Batok Kelapa', 40, 20000),
+(7, 'Gantungan Kunci Batok Kelapa', 100, 10000),
+(8, 'Lampu Hias Tempurung Kelapa', 30, 75000),
+(9, 'Keset Sabut Kelapa', 60, 30000),
+(10, 'Tali Sabut Kelapa', 80, 15000),
+(11, 'Pot Tanaman Sabut Kelapa', 50, 35000),
+(12, 'Sendok Tempurung Kelapa', 70, 12000),
+(13, 'Tas Anyaman Daun Kelapa', 20, 50000),
+(14, 'Topi Anyaman Daun Kelapa', 25, 40000),
+(15, 'Cincin Batok Kelapa', 100, 15000),
+(16, 'Anting Batok Kelapa', 90, 20000),
+(17, 'Kalung Batok Kelapa', 85, 25000),
+(18, 'Pigura Tempurung Kelapa', 40, 45000),
+(19, 'Mainan Mobil Batok Kelapa', 35, 55000),
+(20, 'Miniatur Hewan Batok Kelapa', 45, 60000),
+(21, 'Mangkok Tempurung', 65, 20000),
+(22, 'Centong Nasi Tempurung Kelapa', 55, 15000),
+(23, 'Cangkir Sabut Kelapa', 30, 30000),
+(24, 'Dompet Anyaman Daun Kelapa', 25, 45000),
+(25, 'Kancing Baju Tempurung Kelapa', 200, 5000),
+(26, 'Bros Batok Kelapa', 150, 12000),
+(27, 'Tempat Tisu Tempurung Kelapa', 40, 35000),
+(28, 'Sandal Sabut Kelapa', 30, 60000),
+(29, 'Tempat Pensil Batok Kelapa', 50, 25000),
+(30, 'Mangkok Sabut Kelapa', 55, 20000),
+(31, 'Hiasan Dinding Batok Kelapa', 40, 80000),
+(32, 'Sumpit Tempurung Kelapa', 90, 10000),
+(33, 'Sapu Lidi Sabut Kelapa', 70, 25000),
+(34, 'Tempat Lilin Batok Kelapa', 35, 30000),
+(35, 'Tempat Perhiasan Tempurung Kelapa', 40, 40000),
+(36, 'Gelang Batok Kelapa', 120, 18000),
+(37, 'Tatakan Gelas Tempurung Kelapa', 80, 15000),
+(38, 'Sendok Sayur Tempurung Kelapa', 60, 17000),
+(39, 'Kursi Sabut Kelapa', 15, 250000),
+(40, 'Meja Tempurung Kelapa', 10, 350000),
+(41, 'Lukisan Batok Kelapa', 20, 150000),
+(42, 'Boneka Sabut Kelapa', 30, 55000),
+(43, 'Bakul Anyaman Daun Kelapa', 25, 45000),
+(44, 'Kotak Perhiasan Sabut Kelapa', 40, 60000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `produk_penjualan`
+--
+
+CREATE TABLE `produk_penjualan` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(20) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` tinyint(1) NOT NULL,
+  `total` decimal(10,0) NOT NULL,
+  `id_pelanggan` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `produk_penjualan_detail`
+--
+
+CREATE TABLE `produk_penjualan_detail` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(20) NOT NULL,
+  `id_produk` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `harga_jual` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -300,6 +436,24 @@ ALTER TABLE `pelanggan`
   ADD PRIMARY KEY (`id_pelanggan`);
 
 --
+-- Indexes for table `produk`
+--
+ALTER TABLE `produk`
+  ADD PRIMARY KEY (`id_produk`);
+
+--
+-- Indexes for table `produk_penjualan`
+--
+ALTER TABLE `produk_penjualan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `produk_penjualan_detail`
+--
+ALTER TABLE `produk_penjualan_detail`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `supplier`
 --
 ALTER TABLE `supplier`
@@ -325,31 +479,31 @@ ALTER TABLE `bahan`
 -- AUTO_INCREMENT for table `bahan_keluar`
 --
 ALTER TABLE `bahan_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `bahan_keluar_detail`
 --
 ALTER TABLE `bahan_keluar_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `bahan_log`
 --
 ALTER TABLE `bahan_log`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `bahan_masuk`
 --
 ALTER TABLE `bahan_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `bahan_masuk_detail`
 --
 ALTER TABLE `bahan_masuk_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bahan_stok`
@@ -367,7 +521,25 @@ ALTER TABLE `konfigurasi`
 -- AUTO_INCREMENT for table `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `produk`
+--
+ALTER TABLE `produk`
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `produk_penjualan`
+--
+ALTER TABLE `produk_penjualan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `produk_penjualan_detail`
+--
+ALTER TABLE `produk_penjualan_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `supplier`

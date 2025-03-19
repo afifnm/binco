@@ -49,7 +49,11 @@
                         </td>
                         <td class="border-b">
                             <div class="flex justify-center items-center">
-                                <a class="flex items-center text-blue-500" href="<?= base_url('admin/bahanmasuk/invoice/'.$row['invoice'])?>">
+                                <?php
+                                $prefix = substr($row['invoice'], 0, 1);
+                                $url = ($prefix === 'B') ? 'bahanmasuk' : (($prefix === 'S') ? 'bahankeluar' : '#');
+                                ?>
+                                <a class="flex items-center text-blue-500" href="<?= base_url('admin/'.$url.'/invoice/'.$row['invoice']) ?>">
                                     <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Invoice #<?= $row['invoice'] ?>
                                 </a>
                             </div>

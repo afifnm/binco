@@ -29,16 +29,17 @@
                         <td class="text-right border-b">Rp. <?= number_format($row['harga']); ?></td>
                         <td class="border-b">
 							<div class="flex justify-center items-center">
-								<a class="flex items-center mr-3 text-blue-500 edit-btn" href="javascript:;" 
-									data-id="<?= $row['id_bahan']; ?>" 
-									data-bahan="<?= $row['bahan']; ?>" 
-									data-harga="<?= $row['harga']; ?>" 
-									data-tw-toggle="modal" 
-									data-tw-target="#edit-modal">
+								<a class="flex items-center mr-3 text-blue-500 edit-btn" href="javascript:;" data-tw-toggle="modal" 
+									data-tw-target="#edit-modal"
+                                    onclick="edit(
+                                    '<?php echo $row['id_bahan'] ?>',
+                                    '<?php echo $row['bahan'] ?>',
+                                    '<?php echo $row['harga'] ?>'
+                                    )">
 									<i data-lucide="edit" class="w-4 h-4 mr-1"></i> Edit
 								</a>
 								<a class="flex items-center text-danger delete-btn" href="javascript:;" 
-									data-id="<?= $row['id_bahan']; ?>">
+                                    onclick="hapusProduk(<?= $row['id_bahan']; ?>)">
 									<i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
 								</a>
                                 <a class="flex items-center text-success ml-2" href="<?= base_url('admin/bahan/log/' . $row['id_bahan']); ?>">
