@@ -103,6 +103,17 @@
                         </tbody>
                     </table>
                     <div class="mt-5">
+                        <label>Sumber Penjualan</label>
+                        <select class="select2 w-full border" name="sumber_penjualan" id="sumber_penjualan" required>
+                            <option value="">Pilih Sumber Penjualan</option>
+                            <?php 
+                            foreach ($this->Func_model->sumber() as $sumber) {
+                                echo "<option value='{$sumber['id_sumber']}'>{$sumber['sumber']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mt-5">
                         <button type="button" id="submit-btn"
                             class="btn btn-primary mr-2 mb-2 flex items-center justify-center bg-theme-1 text-white w-full">
                             <i data-feather="plus" class="w-4 h-4 mr-2"></i> Bayar
@@ -147,9 +158,22 @@ document.getElementById("submit-btn").addEventListener("click", function() {
         cancelButtonText: "Batal"
     }).then(result => {
         if (result.isConfirmed) {
+            let sumberPenjualan = document.getElementById("sumber_penjualan").value; // Ambil nilai sumber_penjualan
+
+            if (!sumberPenjualan) {
+                Swal.fire({
+                    title: "Peringatan",
+                    text: "Silakan pilih sumber penjualan terlebih dahulu!",
+                    icon: "warning",
+                    confirmButtonColor: "#d33",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+
             let form = document.createElement("form");
             form.method = "POST";
-            form.action = "<?= base_url('admin/produkkeluar/checkout') ?>";
+            form.action = "<?= base_url('admin/penjualanproduk/checkout') ?>";
 
             let inputTotal = document.createElement("input");
             inputTotal.type = "hidden";
@@ -161,14 +185,21 @@ document.getElementById("submit-btn").addEventListener("click", function() {
             inputSupplier.name = "id_pelanggan";
             inputSupplier.value = "<?= $id_pelanggan ?>";
 
+            let inputSumber = document.createElement("input");
+            inputSumber.type = "hidden";
+            inputSumber.name = "sumber_penjualan";
+            inputSumber.value = sumberPenjualan; // Tambahkan sumber_penjualan
+
             form.appendChild(inputTotal);
             form.appendChild(inputSupplier);
+            form.appendChild(inputSumber);
             document.body.appendChild(form);
             form.submit();
         }
     });
 });
 </script>
+
 <script>
     $(document).ready(function () {
         $('#produk').on('change', function () {

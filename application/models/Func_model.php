@@ -17,6 +17,9 @@ class Func_model extends CI_Model{
         $this->db->where('id_produk', $id_produk)->from('produk');
         return $this->db->get()->row()->nama;
     }
+    public function sumber(){
+        return $this->db->get('sumber')->result_array();
+    }
     public function nota1(){
         $tanggal = date('Y-m');
         $nota = 'B'.date('ymd').$this->session->userdata('id_user').($this->db->where("DATE_FORMAT(tanggal,'%Y-%m')", $tanggal)

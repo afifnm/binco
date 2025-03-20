@@ -127,6 +127,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="<?= base_url('admin/sumber') ?>" class="side-menu <?php if($halaman=='sumber'){ echo "side-menu--active"; } ?>">
+                            <div class="side-menu__icon"> <i data-lucide="globe"></i> </div>
+                            <div class="side-menu__title"> Sumber Penjualan </div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?= base_url('admin/penjualanproduk') ?>" class="side-menu <?php if($halaman=='penjualanproduk'){ echo "side-menu--active"; } ?>">
                             <div class="side-menu__icon"> <i data-lucide="layers"></i> </div>
                             <div class="side-menu__title"> Penjualan Produk </div>

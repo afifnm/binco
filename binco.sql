@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2025 at 08:41 AM
+-- Generation Time: Mar 20, 2025 at 08:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -257,7 +257,7 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id_produk`, `nama`, `stok`, `harga`) VALUES
-(1, 'Gelas Binco', 20, 10000),
+(1, 'Gelas Binco', 52, 10000),
 (2, 'Gantungan Kunci', 50, 25000),
 (3, 'Lampu Hias', 100, 40000),
 (4, 'Tali Sabut Kelapa', 90, 8000),
@@ -305,6 +305,33 @@ INSERT INTO `produk` (`id_produk`, `nama`, `stok`, `harga`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `produk_log`
+--
+
+CREATE TABLE `produk_log` (
+  `id` int(11) NOT NULL,
+  `invoice` varchar(20) NOT NULL,
+  `id_produk` int(11) NOT NULL,
+  `harga_satuan` decimal(10,0) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
+  `tipe` enum('penjualan','pembatalan') NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `id_sumber` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk_log`
+--
+
+INSERT INTO `produk_log` (`id`, `invoice`, `id_produk`, `harga_satuan`, `tanggal`, `tipe`, `jumlah`, `id_sumber`) VALUES
+(1, 'P25032031', 1, 10000, '2025-03-20 07:27:39', 'penjualan', 16, 3),
+(2, 'P25032031', 3, 40000, '2025-03-20 07:27:39', 'penjualan', 20, 3),
+(3, 'P25032031', 1, 10000, '2025-03-20 07:43:10', 'penjualan', 16, 3),
+(4, 'P25032031', 3, 40000, '2025-03-20 07:43:10', 'penjualan', 20, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `produk_penjualan`
 --
 
@@ -315,8 +342,16 @@ CREATE TABLE `produk_penjualan` (
   `status` tinyint(1) NOT NULL,
   `total` decimal(10,0) NOT NULL,
   `id_pelanggan` int(11) NOT NULL,
-  `username` varchar(20) NOT NULL
+  `username` varchar(20) NOT NULL,
+  `id_sumber` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk_penjualan`
+--
+
+INSERT INTO `produk_penjualan` (`id`, `invoice`, `tanggal`, `status`, `total`, `id_pelanggan`, `username`, `id_sumber`) VALUES
+(1, 'P25032031', '2025-03-20 07:40:10', 0, 960000, 3, 'admin', 3);
 
 -- --------------------------------------------------------
 
@@ -331,6 +366,36 @@ CREATE TABLE `produk_penjualan_detail` (
   `jumlah` int(11) NOT NULL,
   `harga_jual` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `produk_penjualan_detail`
+--
+
+INSERT INTO `produk_penjualan_detail` (`id`, `invoice`, `id_produk`, `jumlah`, `harga_jual`) VALUES
+(1, 'P25032031', 1, 16, 10000),
+(2, 'P25032031', 3, 20, 40000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sumber`
+--
+
+CREATE TABLE `sumber` (
+  `id_sumber` int(11) NOT NULL,
+  `sumber` varchar(30) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sumber`
+--
+
+INSERT INTO `sumber` (`id_sumber`, `sumber`, `created_at`, `updated_at`) VALUES
+(2, 'Toko Binco', '2025-03-20 07:12:59', '2025-03-20 07:13:15'),
+(3, 'Tiktok', '2025-03-20 07:13:26', '2025-03-20 07:13:26'),
+(4, 'Shope', '2025-03-20 07:13:34', '2025-03-20 07:13:34');
 
 -- --------------------------------------------------------
 
@@ -442,6 +507,13 @@ ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`);
 
 --
+-- Indexes for table `produk_log`
+--
+ALTER TABLE `produk_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_produk` (`id_produk`);
+
+--
 -- Indexes for table `produk_penjualan`
 --
 ALTER TABLE `produk_penjualan`
@@ -452,6 +524,12 @@ ALTER TABLE `produk_penjualan`
 --
 ALTER TABLE `produk_penjualan_detail`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sumber`
+--
+ALTER TABLE `sumber`
+  ADD PRIMARY KEY (`id_sumber`);
 
 --
 -- Indexes for table `supplier`
@@ -530,16 +608,28 @@ ALTER TABLE `produk`
   MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
+-- AUTO_INCREMENT for table `produk_log`
+--
+ALTER TABLE `produk_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `produk_penjualan`
 --
 ALTER TABLE `produk_penjualan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `produk_penjualan_detail`
 --
 ALTER TABLE `produk_penjualan_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `sumber`
+--
+ALTER TABLE `sumber`
+  MODIFY `id_sumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `supplier`
@@ -568,6 +658,12 @@ ALTER TABLE `bahan_log`
 --
 ALTER TABLE `bahan_stok`
   ADD CONSTRAINT `bahan_stok_ibfk_1` FOREIGN KEY (`id_bahan`) REFERENCES `bahan` (`id_bahan`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `produk_log`
+--
+ALTER TABLE `produk_log`
+  ADD CONSTRAINT `produk_log_ibfk_1` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

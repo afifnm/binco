@@ -39,7 +39,7 @@
                         <td class="text-right border-b">Rp. <?= number_format($row['total']); ?></td>
                         <td class="border-b">
                             <div class="flex justify-center items-center">
-                                <a class="flex items-center text-blue-500" href="<?= base_url('admin/penjualankeluar/invoice/'.$row['invoice'])?>">
+                                <a class="flex items-center text-blue-500" href="<?= base_url('admin/penjualanproduk/invoice/'.$row['invoice'])?>">
                                     <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Invoice
                                 </a>
                             </div>

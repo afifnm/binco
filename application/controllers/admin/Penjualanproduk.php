@@ -26,38 +26,41 @@ class Penjualanproduk extends MY_Controller {
 	}
 	public function invoice($invoice){
 		$data = [
-			'title' => 'penjualan #'.$invoice,
-			'row'   => $this->db->select('a.*, b.*, c.nama as namauser')
+			'title' => 'Penjualan #'.$invoice,
+			'row'   => $this->db->select('a.*, b.*, c.nama as namauser, d.sumber')
 						->where('invoice', $invoice)
 						->join('pelanggan b', 'a.id_pelanggan = b.id_pelanggan', 'left')
 						->join('user c', 'a.username = c.username', 'left')
-						->get('produk_keluar a')->row(),
-			'details' => $this->db->select('a.*, b.produk')
+						->join('sumber d', 'a.id_sumber = d.id_sumber', 'left')
+						->get('produk_penjualan a')->row(),
+			'details' => $this->db->select('a.*, b.nama')
 						->join('produk b', 'a.id_produk = b.id_produk', 'left')
 						->where('invoice', $invoice)
 						->get('produk_penjualan_detail a')->result_array(),
 		];
-		$this->template->load('temp','produk/produkKeluarInvoice',$data);
+		$this->template->load('temp','produk/invoice',$data);
     }
 	public function cancel($invoice){
 		// Update status to 0 (canceled)
-		$this->db->where('invoice', $invoice)->update('produk_keluar', ['status' => 0]);       
+		$this->db->where('invoice', $invoice)->update('produk_penjualan', ['status' => 0]);       
 		// Get the details of the canceled items
 		$details = $this->db->where('invoice', $invoice)->get('produk_penjualan_detail')->result_array();
+		$id_sumber = $this->db->where('invoice', $invoice)->get('produk_penjualan')->row()->id_sumber;
 		foreach ($details as $item) {
 			$this->db->set('stok', 'stok + ' . $item['jumlah'], FALSE)
 					 ->where('id_produk', $item['id_produk'])
-					 ->update('produk_stok'); // update stock
-			$log = [
-				'invoice'	=> $invoice,
-				'tipe'   	=> 'pembatalan',
-				'jumlah'	=> $item['jumlah'],
-				'harga_satuan'	=> $item['harga_jual'],
-				'id_produk'		=> $item['id_produk']
-			];
+					 ->update('produk'); // update stock
+				$log = [
+					'invoice'	=> $invoice,
+					'tipe'   	=> 'penjualan',
+					'jumlah'	=> $item['jumlah'],
+					'harga_satuan'	=> $item['harga_jual'],
+					'id_produk'		=> $item['id_produk'],
+					'id_sumber'	=> $id_sumber
+				];
 			$this->db->insert('produk_log', $log); // insert into log
 		}
-		$this->set_flash('penjualan dibatalkan','success');
+		$this->set_flash('Penjualan dibatalkan','success');
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
@@ -135,7 +138,8 @@ class Penjualanproduk extends MY_Controller {
 					'tipe'   	=> 'penjualan',
 					'jumlah'	=> $item['jumlah'],
 					'harga_satuan'	=> $item['harga'],
-					'id_produk'		=> $item['id_produk']
+					'id_produk'		=> $item['id_produk'],
+					'id_sumber'	=> $post['sumber_penjualan']
 				];
 				$this->db->insert('produk_log',$log); //input ke tabel produk masuk (penjualan)
 			}
@@ -145,11 +149,12 @@ class Penjualanproduk extends MY_Controller {
 				'username'	=> $this->session->userdata('username'),
 				'id_pelanggan'	=> $post['id_pelanggan'],
 				'status'	=> true,
-				'total'		=> $post['total']
+				'total'		=> $post['total'],
+				'id_sumber'	=> $post['sumber_penjualan']
 			];
-			$this->db->insert('produk_keluar',$databeli); //input ke tabel produk masuk (penjualan)
+			$this->db->insert('produk_penjualan',$databeli); //input ke tabel produk masuk (penjualan)
 			$this->set_flash('Pembayaran berhasil dilakukan','success'); //input ke invoice
-			redirect('admin/produkkeluar/invoice/'.$invoice);
+			redirect('admin/penjualanproduk/invoice/'.$invoice);
 		} else {
 			$this->set_flash('Pembayaran gagal dilakukan, restart ulang browser','error');
 			redirect($_SERVER['HTTP_REFERER']);
